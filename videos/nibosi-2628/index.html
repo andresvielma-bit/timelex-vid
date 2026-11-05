@@ -1,0 +1,378 @@
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=1080, height=1920" />
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.15.0/dist/gsap.min.js"></script>
+    <style>
+      @font-face {
+        font-family: "Montserrat";
+        src: url("assets/fonts/Montserrat-VF.ttf") format("truetype");
+        font-weight: 100 900;
+        font-style: normal;
+      }
+      :root {
+        --ground: #000;
+        --ink: #ffffff;
+        --lime: #a8f43c;
+        --stroke: #000000;
+        --check: #3cc23c;
+        --font-display: "Montserrat", sans-serif;
+      }
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        width: 1080px;
+        height: 1920px;
+        overflow: hidden;
+        background: var(--ground);
+      }
+      #root {
+        position: relative;
+        width: 100%;
+        height: 100%;
+        overflow: hidden;
+        background: var(--ground);
+        font-family: var(--font-display);
+      }
+
+      /* ---------- tomas ---------- */
+      .shot {
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+      }
+      .shot > video,
+      .shot > img {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1080px;
+        height: 1920px;
+        object-fit: cover;
+      }
+
+      /* oscurece un poco la franja de arriba para que el texto se lea sobre la pared clara */
+      #top-shade {
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 1080px;
+        height: 760px;
+        background: linear-gradient(to bottom, rgba(0, 0, 0, 0.42), rgba(0, 0, 0, 0.18) 55%, rgba(0, 0, 0, 0));
+        pointer-events: none;
+      }
+      #flash {
+        position: absolute;
+        inset: 0;
+        background: #ffffff;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      /* ---------- texto en pantalla ---------- */
+      .label {
+        position: absolute;
+        left: 70px;
+        top: 300px;
+        width: 940px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+      }
+      .txt {
+        color: var(--ink);
+        font-weight: 800;
+        font-size: 60px;
+        line-height: 1.12;
+        letter-spacing: -0.01em;
+        -webkit-text-stroke: 9px var(--stroke);
+        paint-order: stroke fill;
+        text-shadow: 0 6px 18px rgba(0, 0, 0, 0.55);
+      }
+      .txt .w {
+        display: inline-block;
+        white-space: nowrap;
+      }
+      .txt .line {
+        display: block;
+        white-space: nowrap;
+      }
+      .ico {
+        display: inline-block;
+        width: 62px;
+        height: 62px;
+        margin-left: 14px;
+        vertical-align: -10px;
+        filter: drop-shadow(0 4px 10px rgba(0, 0, 0, 0.5));
+      }
+      .ico svg {
+        display: block;
+        width: 62px;
+        height: 62px;
+      }
+
+      #price {
+        top: 230px;
+      }
+      #price .txt {
+        color: var(--lime);
+        font-weight: 900;
+        font-size: 150px;
+        letter-spacing: -0.02em;
+        -webkit-text-stroke: 16px var(--stroke);
+        text-shadow: 0 10px 28px rgba(0, 0, 0, 0.6);
+      }
+      #model .txt {
+        font-size: 82px;
+        font-weight: 900;
+      }
+      .swatch {
+        display: inline-block;
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        border: 5px solid #000;
+        margin-right: 18px;
+        vertical-align: -4px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+      }
+      .color .txt {
+        font-size: 74px;
+        font-weight: 900;
+      }
+      .color .sub {
+        font-size: 50px;
+        font-weight: 700;
+        color: #e9e9e9;
+      }
+      #phone .txt {
+        font-size: 104px;
+        font-weight: 900;
+        letter-spacing: -0.02em;
+        -webkit-text-stroke: 13px var(--stroke);
+      }
+    </style>
+  </head>
+  <body>
+    <div
+      id="root"
+      data-composition-id="main"
+      data-start="0"
+      data-duration="28"
+      data-width="1080"
+      data-height="1920"
+    >
+      <!-- ===== HOOK: la caja (0 – 3,85 s) ===== -->
+      <div class="shot" id="w01"><video id="s01" class="clip" src="assets/clips/s01.mp4" data-start="0" data-duration="1" data-media-start="0" data-track-index="0" muted playsinline></video></div>
+      <div class="shot" id="w02"><video id="s02" class="clip" src="assets/clips/s02.mp4" data-start="1" data-duration="1.1" data-media-start="0" data-track-index="1" muted playsinline></video></div>
+      <div class="shot" id="w03"><video id="s03" class="clip" src="assets/clips/s03.mp4" data-start="2.1" data-duration="0.85" data-media-start="0" data-track-index="0" muted playsinline></video></div>
+      <div class="shot" id="w04"><video id="s04" class="clip" src="assets/clips/s04.mp4" data-start="2.95" data-duration="0.9" data-media-start="0" data-track-index="1" muted playsinline></video></div>
+
+      <!-- ===== REVEAL: sale el reloj (3,85 s) ===== -->
+      <div class="shot" id="w05"><video id="s05" class="clip" src="assets/clips/s05.mp4" data-start="3.85" data-duration="1.15" data-media-start="0" data-track-index="0" muted playsinline></video></div>
+      <div class="shot" id="w06"><video id="s06" class="clip" src="assets/clips/s06.mp4" data-start="5" data-duration="1.2" data-media-start="0" data-track-index="1" muted playsinline></video></div>
+      <div class="shot" id="w07"><video id="s07" class="clip" src="assets/clips/s07.mp4" data-start="6.2" data-duration="1.22" data-media-start="0" data-track-index="0" muted playsinline></video></div>
+
+      <!-- ===== BENEFICIOS ===== -->
+      <div class="shot" id="w08"><video id="s08" class="clip" src="assets/clips/s08.mp4" data-start="7.42" data-duration="1.56" data-media-start="0" data-track-index="1" muted playsinline></video></div>
+      <div class="shot" id="w09"><video id="s09" class="clip" src="assets/clips/s09.mp4" data-start="8.98" data-duration="1.42" data-media-start="0" data-track-index="0" muted playsinline></video></div>
+      <div class="shot" id="w10"><video id="s10" class="clip" src="assets/clips/s10.mp4" data-start="10.4" data-duration="1.65" data-media-start="0" data-track-index="1" muted playsinline></video></div>
+      <div class="shot" id="w11"><video id="s11" class="clip" src="assets/clips/s11.mp4" data-start="12.05" data-duration="1.15" data-media-start="0" data-track-index="0" muted playsinline></video></div>
+      <div class="shot" id="w12"><video id="s12" class="clip" src="assets/clips/s12.mp4" data-start="13.2" data-duration="1.2" data-media-start="0" data-track-index="1" muted playsinline></video></div>
+
+      <!-- ===== COLORES ===== -->
+      <div class="shot" id="w13"><video id="s13" class="clip" src="assets/clips/s13.mp4" data-start="14.4" data-duration="0.54" data-media-start="0" data-track-index="0" muted playsinline></video></div>
+      <div class="shot" id="w14"><video id="s14" class="clip" src="assets/clips/s14.mp4" data-start="14.94" data-duration="0.54" data-media-start="0" data-track-index="1" muted playsinline></video></div>
+      <div class="shot" id="w15"><video id="s15" class="clip" src="assets/clips/s15.mp4" data-start="15.48" data-duration="0.65" data-media-start="0" data-track-index="0" muted playsinline></video></div>
+      <div class="shot" id="w16"><video id="s16" class="clip" src="assets/clips/s16.mp4" data-start="16.13" data-duration="0.91" data-media-start="0" data-track-index="1" muted playsinline></video></div>
+      <div class="shot" id="w17"><video id="s17" class="clip" src="assets/clips/s17.mp4" data-start="17.04" data-duration="1.04" data-media-start="0" data-track-index="0" muted playsinline></video></div>
+
+      <!-- ===== CONFIANZA ===== -->
+      <div class="shot" id="w18"><video id="s18" class="clip" src="assets/clips/s18.mp4" data-start="18.08" data-duration="1.38" data-media-start="0" data-track-index="1" muted playsinline></video></div>
+      <div class="shot" id="w19"><video id="s19" class="clip" src="assets/clips/s19.mp4" data-start="19.46" data-duration="1.1" data-media-start="0" data-track-index="0" muted playsinline></video></div>
+      <div class="shot" id="w20"><video id="s20" class="clip" src="assets/clips/s20.mp4" data-start="20.56" data-duration="0.99" data-media-start="0" data-track-index="1" muted playsinline></video></div>
+      <div class="shot" id="w21"><video id="s21" class="clip" src="assets/clips/s21.mp4" data-start="21.55" data-duration="1.25" data-media-start="0" data-track-index="0" muted playsinline></video></div>
+      <div class="shot" id="w22"><video id="s22" class="clip" src="assets/clips/s22.mp4" data-start="22.8" data-duration="1.48" data-media-start="0" data-track-index="1" muted playsinline></video></div>
+
+      <!-- ===== CIERRE ===== -->
+      <div class="shot" id="w23"><video id="s23" class="clip" src="assets/clips/s23.mp4" data-start="24.28" data-duration="1.32" data-media-start="0" data-track-index="0" muted playsinline></video></div>
+      <div class="shot" id="w24"><video id="s24" class="clip" src="assets/clips/s24.mp4" data-start="25.6" data-duration="1.15" data-media-start="0" data-track-index="1" muted playsinline></video></div>
+      <div class="shot" id="w25"><video id="s25" class="clip" src="assets/clips/s25.mp4" data-start="26.75" data-duration="1.25" data-media-start="0" data-track-index="0" muted playsinline></video></div>
+
+      <div id="top-shade"></div>
+      <div id="flash"></div>
+
+      <!-- ===== TEXTO EN PANTALLA (cada .tw se escribe letra a letra desde data-at durante data-dur) ===== -->
+      <div id="price" class="label clip" data-start="0.95" data-duration="2.9" data-track-index="5">
+        <div class="txt"><span class="tw" data-at="1.05" data-dur="0.3">49$</span><span class="tw" data-at="2.42" data-dur="0.7">&nbsp;BCV</span></div>
+      </div>
+      <div id="model" class="label clip" data-start="5.02" data-duration="2.4" data-track-index="5">
+        <div class="txt"><span class="tw" data-at="5.02" data-dur="0.45">Nibosi 2628</span></div>
+      </div>
+      <div id="l-dia" class="label clip" data-start="7.46" data-duration="1.52" data-track-index="5">
+        <div class="txt"><span class="tw" data-at="7.46" data-dur="0.4">Día y Fecha</span><span class="ico" data-at="7.9"><svg viewBox="0 0 64 64"><rect x="2" y="2" width="60" height="60" rx="14" fill="#3cc23c" stroke="#000" stroke-width="4"/><path d="M17 33 l10 10 l20 -22" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+      </div>
+      <div id="l-agua" class="label clip" data-start="9" data-duration="1.4" data-track-index="5">
+        <div class="txt"><span class="tw" data-at="9" data-dur="0.45">Resistente al Agua</span><span class="ico" data-at="9.5"><svg viewBox="0 0 64 64"><path d="M32 4 C22 20 12 31 12 42 a20 20 0 0 0 40 0 C52 31 42 20 32 4 Z" fill="#35a7ff" stroke="#000" stroke-width="4"/><path d="M22 42 a10 10 0 0 0 8 10" fill="none" stroke="#d6efff" stroke-width="5" stroke-linecap="round"/></svg></span><span class="ico" data-at="9.6"><svg viewBox="0 0 64 64"><rect x="2" y="2" width="60" height="60" rx="14" fill="#3cc23c" stroke="#000" stroke-width="4"/><path d="M17 33 l10 10 l20 -22" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+      </div>
+      <div id="l-broche" class="label clip" data-start="10.42" data-duration="1.63" data-track-index="5">
+        <div class="txt"><span class="tw" data-at="10.95" data-dur="0.45">Broche Desplegable</span><span class="ico" data-at="11.45"><svg viewBox="0 0 64 64"><rect x="2" y="2" width="60" height="60" rx="14" fill="#3cc23c" stroke="#000" stroke-width="4"/><path d="M17 33 l10 10 l20 -22" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+      </div>
+
+      <div id="c-negro" class="label color clip" data-start="14.94" data-duration="0.54" data-track-index="5">
+        <div class="txt"><span class="swatch" style="background: #1d2126"></span>Negro <span class="sub">· Plateado</span></div>
+      </div>
+      <div id="c-azul" class="label color clip" data-start="15.48" data-duration="0.65" data-track-index="5">
+        <div class="txt"><span class="swatch" style="background: #6fc6e8"></span>Azul <span class="sub">· Plateado</span></div>
+      </div>
+      <div id="c-oliva" class="label color clip" data-start="16.13" data-duration="0.91" data-track-index="5">
+        <div class="txt"><span class="swatch" style="background: #9cc43a"></span>Verde Oliva <span class="sub">· Oro Rosa</span></div>
+      </div>
+      <div id="c-choco" class="label color clip" data-start="17.04" data-duration="1.04" data-track-index="5">
+        <div class="txt"><span class="swatch" style="background: #6b3a2a"></span>Chocolate <span class="sub">· Oro Rosa</span></div>
+      </div>
+
+      <div id="l-caja" class="label clip" data-start="18.12" data-duration="1.34" data-track-index="5">
+        <div class="txt"><span class="tw" data-at="18.5" data-dur="0.4">Caja Original</span><span class="ico" data-at="18.95"><svg viewBox="0 0 64 64"><rect x="2" y="2" width="60" height="60" rx="14" fill="#3cc23c" stroke="#000" stroke-width="4"/><path d="M17 33 l10 10 l20 -22" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div>
+      </div>
+      <div id="l-delivery" class="label clip" data-start="19.5" data-duration="2.05" data-track-index="5">
+        <div class="txt"><div class="line"><span class="tw" data-at="19.55" data-dur="0.3">Delivery GRATIS</span></div><div class="line"><span class="tw" data-at="19.9" data-dur="0.3">en Caracas</span><span class="ico" data-at="20.25"><svg viewBox="0 0 64 64"><rect x="2" y="2" width="60" height="60" rx="14" fill="#3cc23c" stroke="#000" stroke-width="4"/><path d="M17 33 l10 10 l20 -22" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div>
+      </div>
+      <div id="l-envios" class="label clip" data-start="21.58" data-duration="2.7" data-track-index="5">
+        <div class="txt"><div class="line"><span class="tw" data-at="21.62" data-dur="0.35">Envíos Nacionales</span></div><div class="line"><span class="tw" data-at="22.62" data-dur="0.4">por MRW o Zoom</span><span class="ico" data-at="23.9"><svg viewBox="0 0 64 64"><rect x="2" y="2" width="60" height="60" rx="14" fill="#3cc23c" stroke="#000" stroke-width="4"/><path d="M17 33 l10 10 l20 -22" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/></svg></span></div></div>
+      </div>
+      <div id="phone" class="label clip" data-start="24.3" data-duration="3.7" data-track-index="5">
+        <div class="txt"><span class="tw" data-at="24.32" data-dur="0.55">¡0422-029-1685!</span></div>
+      </div>
+
+      <!-- ===== AUDIO ===== -->
+      <audio id="voz" src="assets/voz.wav" data-start="0" data-duration="27.39" data-track-index="10" data-volume="1"></audio>
+      <audio id="musica" src="assets/musica.wav" data-start="0" data-duration="28" data-track-index="11" data-volume="1"></audio>
+
+      <!-- ===== EFECTOS DE SONIDO (biblioteca de HyperFrames, offline) ===== -->
+      <!-- subida que corona justo en el reveal, golpe de bajo y brillo cuando sale el reloj -->
+      <audio id="fx-riser" src="assets/sfx/riser.mp3" data-start="1.25" data-duration="2.6" data-media-start="1.0" data-track-index="20" data-volume="0.32" data-automation='{"version":1,"lanes":[{"target":"volume","points":[{"t":0,"v":0},{"t":1.2,"v":0.6},{"t":2.6,"v":1}]}]}'></audio>
+      <audio id="fx-impact" src="assets/sfx/impact-bass-1.mp3" data-start="3.83" data-duration="1.6" data-track-index="21" data-volume="0.55"></audio>
+      <audio id="fx-sparkle" src="assets/sfx/sparkle.mp3" data-start="3.95" data-duration="1.5" data-track-index="22" data-volume="0.22"></audio>
+      <!-- precio -->
+      <audio id="fx-pop-49" src="assets/sfx/pop.mp3" data-start="1.05" data-duration="0.5" data-track-index="23" data-volume="0.35"></audio>
+      <audio id="fx-pop-bcv" src="assets/sfx/pop.mp3" data-start="2.42" data-duration="0.5" data-track-index="23" data-volume="0.3"></audio>
+      <!-- cortes del hook: manos y caja -->
+      <audio id="fx-wh-01" src="assets/sfx/whoosh-short.mp3" data-start="0.88" data-duration="0.5" data-track-index="24" data-volume="0.18"></audio>
+      <audio id="fx-wh-02" src="assets/sfx/whoosh-short.mp3" data-start="1.98" data-duration="0.5" data-track-index="24" data-volume="0.18"></audio>
+      <audio id="fx-wh-03" src="assets/sfx/whoosh-short.mp3" data-start="2.83" data-duration="0.5" data-track-index="24" data-volume="0.2"></audio>
+      <!-- cortes con movimiento -->
+      <audio id="fx-wh-05" src="assets/sfx/whoosh-short.mp3" data-start="4.88" data-duration="0.5" data-track-index="25" data-volume="0.25"></audio>
+      <audio id="fx-wh-08" src="assets/sfx/whoosh-short.mp3" data-start="7.30" data-duration="0.5" data-track-index="25" data-volume="0.22"></audio>
+      <audio id="fx-wh-13" src="assets/sfx/whoosh.mp3" data-start="14.28" data-duration="0.5" data-track-index="25" data-volume="0.3"></audio>
+      <audio id="fx-wh-14" src="assets/sfx/whoosh-short.mp3" data-start="14.82" data-duration="0.5" data-track-index="26" data-volume="0.2"></audio>
+      <audio id="fx-wh-15" src="assets/sfx/whoosh-short.mp3" data-start="15.36" data-duration="0.5" data-track-index="25" data-volume="0.2"></audio>
+      <audio id="fx-wh-16" src="assets/sfx/whoosh-short.mp3" data-start="16.01" data-duration="0.5" data-track-index="26" data-volume="0.2"></audio>
+      <audio id="fx-wh-17" src="assets/sfx/whoosh-short.mp3" data-start="16.92" data-duration="0.5" data-track-index="25" data-volume="0.2"></audio>
+      <audio id="fx-wh-18" src="assets/sfx/whoosh-short.mp3" data-start="17.96" data-duration="0.5" data-track-index="26" data-volume="0.22"></audio>
+      <audio id="fx-wh-23" src="assets/sfx/whoosh.mp3" data-start="24.16" data-duration="0.5" data-track-index="25" data-volume="0.3"></audio>
+      <!-- cada ✅ entra con un pop -->
+      <audio id="fx-pop-dia" src="assets/sfx/pop.mp3" data-start="7.9" data-duration="0.5" data-track-index="27" data-volume="0.3"></audio>
+      <audio id="fx-pop-agua" src="assets/sfx/pop.mp3" data-start="9.6" data-duration="0.5" data-track-index="27" data-volume="0.3"></audio>
+      <audio id="fx-pop-broche" src="assets/sfx/pop.mp3" data-start="11.45" data-duration="0.5" data-track-index="27" data-volume="0.3"></audio>
+      <audio id="fx-pop-caja" src="assets/sfx/pop.mp3" data-start="18.95" data-duration="0.5" data-track-index="27" data-volume="0.3"></audio>
+      <audio id="fx-pop-delivery" src="assets/sfx/pop.mp3" data-start="20.25" data-duration="0.5" data-track-index="27" data-volume="0.3"></audio>
+      <audio id="fx-pop-envios" src="assets/sfx/pop.mp3" data-start="23.9" data-duration="0.5" data-track-index="27" data-volume="0.3"></audio>
+      <!-- teléfono -->
+      <audio id="fx-chime" src="assets/sfx/chime.mp3" data-start="24.32" data-duration="2.4" data-track-index="28" data-volume="0.4"></audio>
+    </div>
+
+    <script>
+      const tl = gsap.timeline({ paused: true });
+
+      // --- Texto que se escribe letra a letra (agrupado por palabras para que no se corten al saltar de línea) ---
+      document.querySelectorAll(".tw").forEach((el) => {
+        const text = el.textContent;
+        el.textContent = "";
+        const chars = [];
+        text.split(/(\s+)/).forEach((part) => {
+          if (!part) return;
+          if (/^\s+$/.test(part)) {
+            const sp = document.createElement("span");
+            sp.textContent = part.replace(/ /g, " ");
+            el.appendChild(sp);
+            chars.push(sp);
+            return;
+          }
+          const w = document.createElement("span");
+          w.className = "w";
+          for (const ch of part) {
+            const c = document.createElement("span");
+            c.textContent = ch;
+            w.appendChild(c);
+            chars.push(c);
+          }
+          el.appendChild(w);
+        });
+        const at = parseFloat(el.dataset.at);
+        const dur = parseFloat(el.dataset.dur);
+        const step = dur / Math.max(1, chars.length);
+        tl.set(chars, { opacity: 0 }, 0);
+        chars.forEach((c, i) => tl.set(c, { opacity: 1 }, at + i * step));
+      });
+      document.querySelectorAll(".ico").forEach((el) => {
+        tl.fromTo(el, { scale: 0, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.22, ease: "back.out(2.6)" }, parseFloat(el.dataset.at));
+      });
+
+      // --- Colores: entran con un pequeño golpe ---
+      ["#c-negro", "#c-azul", "#c-oliva", "#c-choco"].forEach((id) => {
+        const start = parseFloat(document.querySelector(id).dataset.start);
+        tl.fromTo(id + " .txt", { scale: 1.18, opacity: 0 }, { scale: 1, opacity: 1, duration: 0.14, ease: "power3.out" }, start);
+      });
+
+      // --- Hook: encuadre cerrado sobre la caja (la vitrina del fondo queda fuera) y empuje lento ---
+      gsap.set(["#w01", "#w02", "#w03", "#w04"], { transformOrigin: "50% 70%" });
+      tl.fromTo("#w01", { scale: 1.22 }, { scale: 1.28, duration: 1.0, ease: "none" }, 0);
+      tl.fromTo("#w02", { scale: 1.22 }, { scale: 1.28, duration: 1.1, ease: "none" }, 1.0);
+      tl.fromTo("#w03", { scale: 1.25 }, { scale: 1.3, duration: 0.85, ease: "none" }, 2.1);
+      tl.fromTo("#w04", { scale: 1.25 }, { scale: 1.42, duration: 0.9, ease: "power1.in" }, 2.95);
+
+      // --- REVEAL (3,85 s): destello + la imagen cae desde un zoom ---
+      tl.set("#flash", { opacity: 0.92 }, 3.85);
+      tl.to("#flash", { opacity: 0, duration: 0.32, ease: "power2.out" }, 3.86);
+      tl.fromTo("#w05", { scale: 1.22 }, { scale: 1.0, duration: 0.45, ease: "power3.out" }, 3.85);
+      tl.to("#price", { opacity: 0, duration: 0.08 }, 3.77);
+
+      // --- Movimiento suave en las tomas largas ---
+      tl.fromTo("#w06", { scale: 1.08 }, { scale: 1.0, duration: 0.35, ease: "power3.out" }, 5.0);
+      tl.fromTo("#w07", { scale: 1.0 }, { scale: 1.05, duration: 1.22, ease: "none" }, 6.2);
+      // día y fecha: misma muñeca, acercamiento a la ventana del día y a la fecha (toma en 4K, se mantiene nítida)
+      gsap.set("#w08", { transformOrigin: "49% 44%" });
+      tl.fromTo("#w08", { scale: 1.15 }, { scale: 2.1, duration: 1.56, ease: "power2.inOut" }, 7.42);
+      // broche: acercamiento a la parte baja del cuadro, donde las manos lo abren
+      gsap.set("#w10", { transformOrigin: "50% 78%" });
+      tl.fromTo("#w10", { scale: 1.35 }, { scale: 1.45, duration: 1.65, ease: "none" }, 10.4);
+      tl.fromTo("#w11", { scale: 1.0 }, { scale: 1.06, duration: 1.15, ease: "none" }, 12.05);
+      tl.fromTo("#w12", { scale: 1.06 }, { scale: 1.0, duration: 1.2, ease: "none" }, 13.2);
+
+      // --- Colores: cada corte llega con un pequeño golpe de zoom ---
+      [["#w13", 14.4], ["#w14", 14.94], ["#w15", 15.48], ["#w16", 16.13], ["#w17", 17.04]].forEach(([id, at]) => {
+        tl.fromTo(id, { scale: 1.1 }, { scale: 1.0, duration: 0.3, ease: "power3.out" }, at);
+      });
+
+      tl.fromTo("#w18", { scale: 1.0 }, { scale: 1.06, duration: 1.38, ease: "none" }, 18.08);
+      tl.fromTo("#w22", { scale: 1.0 }, { scale: 1.05, duration: 1.48, ease: "none" }, 22.8);
+
+      // --- Cierre: los cuatro colores con empuje lento ---
+      tl.fromTo("#w23", { scale: 1.08 }, { scale: 1.0, duration: 0.4, ease: "power3.out" }, 24.28);
+      tl.fromTo("#w24", { scale: 1.0 }, { scale: 1.05, duration: 1.15, ease: "none" }, 25.6);
+      tl.fromTo("#w25", { scale: 1.0 }, { scale: 1.05, duration: 1.25, ease: "none" }, 26.75);
+      tl.fromTo("#phone .txt", { scale: 0.9 }, { scale: 1.0, duration: 0.3, ease: "back.out(2)" }, 24.3);
+
+      window.__timelines["main"] = tl;
+      tl.seek(0);
+    </script>
+  </body>
+</html>
