@@ -1,4 +1,6 @@
 *.MOV
 *.mov
+*.mp4
+!Refs/*.mp4
 node_modules/
 
