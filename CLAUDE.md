@@ -41,7 +41,9 @@ Sé editar y lo hago bien, pero no me gusta. **Tú editas los videos** con **Hyp
 ## Lo esencial del estilo (resumen; el detalle está en la metodología)
 
 - **Duración:** ~25–28 s, nunca más de 30 s.
-- **Cortes:** cada escena dura máximo 2 s; solo una toma "bonita" del reloj puede llegar a 3 s.
+- **Siempre con HyperFrames:** todos los videos se editan y renderizan con HyperFrames (ffmpeg solo para preparar tomas, voz y volumen final).
+- **Cortes:** cada escena dura entre 1,5 s (mínimo, nunca menos) y 2 s, con promedio de 1,5–2 s. Las escenas bonitas o pausadas (la esfera) pueden llegar a 3 s como máximo.
+- **Subtítulos siempre:** pequeños pero legibles, dinámicos (grupos de 2–4 palabras, palabra activa resaltada), centrados abajo pero fuera de la zona de botones de TikTok/Reels (bloque entre y≈1300 y 1450 de 1920). Detalle en § 6.1 de `METODOLOGIA.md`.
 - **Hook con misterio:** abrir la caja, sacarla, quitar el paño… sin mostrar la esfera. El hook puede ser el precio ("Por tan solo 49 a tasa del Banco Central…", que funcionó muy bien en el viral), una prueba, una frase aspiracional o una historia. Eso cambia según el video; la estructura no.
 - **El giro:** cuando sale el reloj hay una transición (destello + zoom) y la música, que venía tranquila, agarra ritmo rápido justo ahí.
 - **Después:** el reloj bonito, los detalles (correa, broche, día y fecha), las pruebas si las hay (agua, rayado), los colores uno por uno, la caja, el delivery y los envíos, y al final el número de teléfono.

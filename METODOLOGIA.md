@@ -13,7 +13,8 @@ Hay dos tipos de reglas:
 | # | Regla |
 |---|---|
 | 1 | **Duración:** ~28 s. Techo 30 s. |
-| 2 | **Cada toma dura máximo 2 s.** Una sola toma "bonita" del reloj puede llegar a 3 s. El hook va más rápido: 0,8–1,1 s por toma. |
+| 0 | **Siempre se edita con HyperFrames** (skill `/hyperframes`): composición en `index.html`, revisión con `npx hyperframes check`/`snapshot` y render con `npx hyperframes render`. No se usan otros editores ni se arma el video solo con ffmpeg (ffmpeg es solo para preparar tomas, voz y el volumen final). |
+| 2 | **Duración de cada escena: mínimo 1,5 s, máximo 2 s, promedio entre 1,5 y 2 s.** Ninguna escena dura menos de 1,5 s, tampoco en el hook ni en los colores. Las escenas "bonitas" o más pausadas (la esfera, la toma de presentación) pueden llegar a **3 s como máximo**. Si una frase de la voz es muy corta para 1,5 s, se junta con la siguiente en la misma toma. |
 | 3 | **Solo video, nunca fotos.** Si hace falta mostrar un detalle (día y fecha, broche), se hace un acercamiento sobre una toma de video. |
 | 4 | **Solo tomas nítidas.** Se revisa el reloj de cerca en cada toma antes de usarla. Si se ve movido o desenfocado, se cambia. |
 | 5 | **Nada de efectos sobre la imagen:** sin viñetas, sin fondos oscuros, sin filtros de "ambiente". Solo una corrección de color suave para que el acero brille. |
@@ -22,7 +23,7 @@ Hay dos tipos de reglas:
 | 8 | **La música arranca en el giro:** antes suena apagada y tranquila; en el giro entra completa con el ritmo. |
 | 9 | **Siempre hay efectos de sonido** en el giro, en los cortes con movimiento y cuando aparece texto (ver § 7). |
 | 10 | **Cada idea de la voz tiene su toma.** Si la voz dice "broche", se ve el broche; si dice "verde oliva", se ve solo el verde oliva. |
-| 11 | **Texto mínimo:** solo los datos clave (precio, beneficios con ✅, colores, teléfono). Nada de subtítulos palabra por palabra. |
+| 11 | **Etiquetas mínimas arriba** (precio, beneficios con ✅, colores, teléfono) **y siempre subtítulos de la voz abajo-centro** (ver § 6.1). |
 | 12 | **El video termina en movimiento**, con el teléfono en pantalla; sin cuadro negro ni logo largo. |
 
 ---
@@ -38,7 +39,7 @@ Hay dos tipos de reglas:
 Los tiempos son orientativos: mandan los de la voz grabada.
 
 ### 2.1 Hook (0 – ~4 s): misterio
-- **Imagen:** 4 tomas rápidas que no muestran el reloj: caja cerrada con el logo → abres la funda → caja interior o tarjeta → quitas el paño. El primer cuadro ya tiene movimiento.
+- **Imagen:** 2–3 tomas (de 1,5–2 s cada una) que no muestran el reloj, elegidas entre: caja cerrada con el logo → abres la funda → caja interior o tarjeta → quitas el paño. El primer cuadro ya tiene movimiento.
 - **Encuadre:** acercamiento leve (1,2–1,3x) sobre la caja, con un empuje lento.
 - **Música:** apagada (filtrada), tranquila. Una subida (riser) crece hasta el giro.
 - **Texto:** depende del tipo de hook (ver abajo).
@@ -75,7 +76,7 @@ Sea cual sea el hook, la voz arranca en el segundo 0, sin saludo ni silencio.
 ### 2.4 Colores (~14 – 18 s)
 - "Lo tienes en…" → todos los colores juntos.
 - Cada color nombrado → **solo ese color**, con su nombre en pantalla (`● Negro · Plateado`).
-- Cortes de 0,5–1 s, cada uno con un golpe de zoom (1,1x → 1x en 0,3 s) y un whoosh corto.
+- Cortes de 1,5–2 s (nunca menos de 1,5 s), cada uno con un golpe de zoom (1,1x → 1x en 0,3 s) y un whoosh corto.
 - Nunca "lo tienes en tres colores" sin decir cuáles.
 
 ### 2.5 Confianza (~18 – 24 s)
@@ -175,6 +176,20 @@ Fuente: **Montserrat** (`assets/fonts/Montserrat-VF.ttf`, licencia libre). Todo 
 - Fuera del 20 % de abajo y del borde derecho (botones de TikTok y Reels).
 - ✅ y 💧 se dibujan como SVG dentro del HTML (no como emoji), para que se vean igual en el render.
 
+### 6.1 Subtítulos (siempre)
+
+Todos los videos llevan subtítulos de la voz, hechos en HyperFrames y sincronizados con los tiempos por palabra de la transcripción de la voz limpia (`tools/transcribe.py`).
+
+| Aspecto | Cómo |
+|---|---|
+| Posición | **Centrados abajo, pero fuera de la zona prohibida**: el bloque va entre y≈1300 y y≈1450 (de 1920), centrado en x y con márgenes de ~120 px a cada lado (más a la derecha por los botones). Nunca en el 22 % de abajo (descripción, música y botones de TikTok/Reels) ni pegados al borde derecho. |
+| Tamaño | Pequeños pero legibles: Montserrat 800, ~52–58 px, blanco con borde negro (~8 px) y sombra suave. Máximo una línea (dos solo si hace falta). |
+| Ritmo | Dinámicos: grupos de 2–4 palabras que cambian con la voz; la palabra que se está diciendo se resalta (verde lima `#a8f43c` o un leve zoom 1,0 → 1,08). Cada grupo entra con un pop corto (escala 0,9 → 1 en ~0,12 s). |
+| Texto | Lo que dice la voz, tal cual, con números como se muestran ("49$ BCV", "0422-029-1685"). Sin punto final. |
+| Convivencia | Las etiquetas (precio, ✅, colores, teléfono) siguen arriba; los subtítulos nunca las tapan ni se duplican con ellas en la misma posición. |
+
+Se revisan en los snapshots: que se lean sobre fondos claros, que no choquen con la mano/reloj principal y que no caigan en la zona de botones.
+
 ---
 
 ## 7. Sonido
@@ -263,7 +278,7 @@ Biblioteca offline de HyperFrames (`media-use/audio/assets/sfx`), copiada en `as
    `powershell -ExecutionPolicy Bypass -File ..\..\tools\extract-shots.ps1 -Src "..\..\<Modelo>" -Edl edl.csv`
 6. **Nitidez:** recorte del reloj de cada toma en 3 momentos y revisión a ojo; se cambia lo que esté borroso (y se re-extrae con `-Only s07,s11`).
 7. **Música:** `tools/musicgen.py` (o tu canción) → `tools/music_bed.py <pista> assets/voz.wav assets/musica.wav --dur 28 --drop 3.85 [--hit 3.76]`.
-8. **Composición:** `index.html` (tomas, textos, efectos, audio).
+8. **Composición (HyperFrames):** `index.html` (tomas, textos, subtítulos § 6.1, efectos, audio).
 9. **Revisión:** `npx hyperframes check` (sin errores) y `npx hyperframes snapshot --at ...` en los momentos clave.
 10. **Render:**
     ```
@@ -285,7 +300,9 @@ Notas de esta máquina:
 ## 10. Checklist antes de entregar
 
 - [ ] ¿Dura ~28 s (máximo 30)?
-- [ ] ¿Ninguna toma pasa de 2 s (salvo una de 3 s)?
+- [ ] ¿Se editó y renderizó con HyperFrames?
+- [ ] ¿Ninguna escena dura menos de 1,5 s ni más de 2 s (salvo las bonitas/pausadas, máximo 3 s), con promedio entre 1,5 y 2 s?
+- [ ] ¿Hay subtítulos dinámicos abajo-centro, legibles y fuera de la zona de botones?
 - [ ] ¿Todas las tomas están nítidas (revisadas de cerca)?
 - [ ] ¿No hay fotos, viñetas ni fondos oscuros?
 - [ ] ¿El hook no muestra ninguna esfera?
@@ -316,6 +333,7 @@ Notas de esta máquina:
 | Guion Poedagar 821 v1 | La voz narraba el clip ("Clic… giras la muñeca…"); "correa integrada a la caja" no se entiende; "que no se note lo poco que gastaste" suena a mala calidad | El guion es voz de venta que se graba aparte: nunca describe lo que hace la mano en la toma. Beneficios en palabras que entienda cualquiera. Nada que insinúe barato o mala calidad: el precio se dice como oportunidad, no como "gastaste poco" |
 | Nibosi 2653 | Se procesó la voz con EQ y compresión (`voice.ps1`) | **La voz queda natural**: solo se quitan los silencios y se sube con ganancia lineal, sin EQ, compresor ni limitador |
 | Guion Onola 3826 v1 | Hook "¿Cuánto crees que cuesta?" en el reloj más caro de la tienda: hacía pensar que era barato | Antes de elegir el hook, preguntar dónde está el modelo en la gama de precios. En los de gama alta, el hook vende exclusividad o presencia (nunca juega a adivinar el precio) y el precio va al cierre sin "tan solo" |
+| Pedido nov. 2026 | Escenas de 0,5–1 s se sentían demasiado rápidas; faltaban subtítulos | Escenas de 1,5 s mínimo, 2 s máximo (promedio 1,5–2 s; bonitas hasta 3 s). Subtítulos dinámicos siempre, abajo-centro fuera de la zona prohibida (§ 6.1). Siempre HyperFrames |
 
 ---
 
