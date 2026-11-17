@@ -12,7 +12,7 @@ Hay dos tipos de reglas:
 
 | # | Regla |
 |---|---|
-| 1 | **Duración:** ~28 s. Techo 30 s. |
+| 1 | **Duración:** ~28 s. Lo ideal es no pasar de 30 s; el tope absoluto es 35 s. |
 | 0 | **Siempre se edita con HyperFrames** (skill `/hyperframes`): composición en `index.html`, revisión con `npx hyperframes check`/`snapshot` y render con `npx hyperframes render`. No se usan otros editores ni se arma el video solo con ffmpeg (ffmpeg es solo para preparar tomas, voz y el volumen final). |
 | 2 | **Duración de cada escena: mínimo 1,5 s, máximo 2 s, promedio entre 1,5 y 2 s.** Ninguna escena dura menos de 1,5 s, tampoco en el hook ni en los colores. Las escenas "bonitas" o más pausadas (la esfera, la toma de presentación) pueden llegar a **3 s como máximo**. Si una frase de la voz es muy corta para 1,5 s, se junta con la siguiente en la misma toma. |
 | 3 | **Solo video, nunca fotos.** Si hace falta mostrar un detalle (día y fecha, broche), se hace un acercamiento sobre una toma de video. |
@@ -24,7 +24,7 @@ Hay dos tipos de reglas:
 | 9 | **Siempre hay efectos de sonido** en el giro, en los cortes con movimiento y cuando aparece texto (ver § 7). |
 | 10 | **Cada idea de la voz tiene su toma.** Si la voz dice "broche", se ve el broche; si dice "verde oliva", se ve solo el verde oliva. |
 | 11 | **Etiquetas mínimas arriba** (precio, beneficios con ✅, colores, teléfono) **y siempre subtítulos de la voz abajo-centro** (ver § 6.1). |
-| 12 | **El video termina en movimiento**, con el teléfono en pantalla; sin cuadro negro ni logo largo. |
+| 12 | **El video termina en movimiento**, con la llamada a la acción en pantalla (el teléfono, o "Comenta LO QUIERO" en el formato sin precio ni teléfono); sin cuadro negro ni logo largo. |
 
 ---
 
@@ -40,8 +40,9 @@ Los tiempos son orientativos: mandan los de la voz grabada.
 
 ### 2.1 Hook (0 – ~4 s): misterio
 - **Imagen:** 2–3 tomas (de 1,5–2 s cada una) que no muestran el reloj, elegidas entre: caja cerrada con el logo → abres la funda → caja interior o tarjeta → quitas el paño. El primer cuadro ya tiene movimiento.
-- **Encuadre:** acercamiento leve (1,2–1,3x) sobre la caja, con un empuje lento.
-- **Música:** apagada (filtrada), tranquila. Una subida (riser) crece hasta el giro.
+- **Si no hay toma de la caja** con ese reloj (no sirve la caja de otro modelo ni la caja quieta al fondo del set): el hook se arma con **la correa, la tapa trasera y el broche**, sin que se vea la esfera, en cámara lenta suave (0,75x, columna `vel` del `edl.csv`) para que se sienta misterioso. Nunca se hace zoom sobre la caja que está de fondo en el set.
+- **Encuadre:** acercamiento leve (1,2–1,3x) sobre la caja o la correa, con un empuje lento. La última toma antes del giro empuja más rápido (hasta ~1,55x).
+- **Música:** tranquila (intro aparte de piano o pads) pero **se escucha**. Una subida (riser) crece hasta el giro.
 - **Texto:** depende del tipo de hook (ver abajo).
 
 **Tipos de hook (flexible):**
@@ -52,6 +53,13 @@ Los tiempos son orientativos: mandan los de la voz grabada.
 | **Prueba** | "¿Lo destruí?" / la prueba de rayado o agua | Pregunta grande en blanco | `Refs/4dd297…` |
 | **Aspiracional** | "Para verte elegante no necesitas un reloj de mil dólares…" | Frase corta | `Refs/599692…` |
 | **Historia / curiosidad** | "Te voy a mostrar un reloj donde nada es de adorno…" | Frase corta | `Refs/fc23c5…` |
+| **Lista / consejo** | "Antes de comprar un reloj, fíjate en estas tres cosas." Primero… segundo… y tercero (el reloj sale en el tercero) | La frase del hook en la mitad baja; luego cada punto con su número grande en verde lima (1, 2, 3) | Poedagar 970 |
+
+### Formato sin precio ni teléfono (flexible)
+Para que no todos los videos se vean iguales, se puede hacer un video que **no dice el precio, ni el número del modelo, ni muestra el teléfono**:
+- El modelo se nombra como *"nuestro nuevo modelo de Poedagar"* (en pantalla, "Nuevo Poedagar").
+- El cierre es *"Comenta 'lo quiero' y te envío el catálogo."* En pantalla, "Comenta 💬 / "LO QUIERO" (verde lima) / y te envío el catálogo" hasta el último cuadro, con un `chime` en "lo quiero".
+- Con el formato lista, el giro cae más tarde (~10 s, en "y tercero"). Durante el hook suena la intro tranquila y cada número entra con un `click`.
 
 Sea cual sea el hook, la voz arranca en el segundo 0, sin saludo ni silencio.
 
@@ -63,8 +71,8 @@ Sea cual sea el hook, la voz arranca en el segundo 0, sin saludo ni silencio.
 ### 2.2 Giro (~4 s): sale el reloj
 - Coincide con la frase que presenta el reloj ("te podrás llevar este…").
 - **Imagen:** la mano levanta el reloj o el reloj aparece de golpe. Es la primera vez que se ve la esfera.
-- **Transición:** destello blanco corto (0,3 s) + la imagen cae desde un zoom de 1,22x a 1x en 0,45 s. Es la única transición con efecto de todo el video.
-- **Sonido:** termina la subida, entra un golpe de bajo y un brillo, y la música arranca completa en ese mismo cuadro.
+- **Transición: entrada rápida del reloj.** Destello blanco corto (0,3 s) + la imagen entra desde un zoom grande (1,6x) con un leve giro (−7° → 0°) y cae a 1x en ~0,42 s (`expo.out`). El reloj no puede "aparecer de la nada" con un corte simple. Es la única transición con efecto de todo el video.
+- **Sonido:** termina la subida, entra un `whoosh-cinematic`, un golpe de bajo y un brillo, y **la música cambia en ese mismo cuadro de tranquila a movida** (se tiene que notar que "se activa").
 
 ### 2.3 Beneficios (~4 – 14 s)
 - Una toma por beneficio, con su etiqueta y ✅ cuando la voz lo dice.
@@ -149,7 +157,7 @@ Tips de grabación: mover la muñeca despacio y dejar 2–3 s quieto en cada pos
 |---|---|
 | Cortes normales | Corte seco, en el movimiento de la mano. |
 | Hook | Encuadre 1,2–1,3x sobre la caja y empuje lento (+0,05 en la toma). La última toma del hook empuja más (hasta 1,42x). |
-| Giro | Destello blanco (opacidad 0,92 → 0 en 0,32 s) + zoom 1,22x → 1x en 0,45 s. |
+| Giro | Entrada rápida: destello blanco (opacidad 0,95 → 0 en 0,3 s) + zoom 1,6x → 1x con giro −7° → 0° en ~0,42 s (`expo.out`). |
 | Toma después del giro | Pequeño golpe de zoom 1,08x → 1x. |
 | Detalle (día y fecha) | Acercamiento de 1,15x a 2,1x en ~1,5 s, centrado en el detalle. Se extrae esa toma en 4K para que no pierda nitidez. |
 | Broche | Acercamiento fijo de 1,35–1,45x sobre la zona de las manos. |
@@ -197,34 +205,41 @@ Se revisan en los snapshots: que se lean sobre fondos claros, que no choquen con
 ### 7.1 Voz
 - **Grabación:** tu voz, siguiendo el guion. Mejor con la app Notas de Voz del iPhone y enviando el archivo; la nota de voz de WhatsApp pierde agudos y suena "dentro de un pote".
 - **Proceso** (`tools/voice.ps1`): **la voz no se modifica**.
-  1. Se quita el silencio inicial y se acortan a ~0,1 s las pausas de más de 0,3 s.
+  1. Se quita el silencio inicial y se acortan a ~0,1 s las pausas de más de 0,3 s. **Antes de cortar una pausa, se mira la envolvente de energía de esa zona** (no solo `silencedetect` ni el tiempo de whisper): las sílabas finales suaves ("to-**do**") quedan por debajo del umbral y se pierden. Después de procesar, se transcribe la voz limpia y se comprueba que estén todas las palabras del guion.
   2. Ganancia lineal (volumen parejo) hasta −16 LUFS o hasta −1 dBFS de pico, lo que llegue primero.
   3. Nada más: sin EQ, sin compresor, sin limitador y sin reducción de ruido.
 - Después se vuelve a transcribir la voz limpia para sacar el tiempo exacto de cada palabra; los cortes y los textos se alinean a esos tiempos.
 
 ### 7.2 Música
-- **Estructura:** antes del giro, apagada (pasa-bajos 350 Hz) y más baja; se abre en los 0,6 s previos y **entra completa en el cuadro del giro**, sobre un golpe fuerte de la pista.
+- **Estructura:** antes del giro, una **intro tranquila** (piano o pads, sin batería) que se escucha bien; en el cuadro del giro entra la pista movida, sobre un golpe fuerte. El cambio de tranquila a emocionante se tiene que sentir.
+  - Con dos pistas: `music_bed.py <movida> <voz> <salida> --intro <tranquila> --intro-gain -4 --duck 0.35 ...`
+  - La versión vieja (la misma pista apagada con pasa-bajos) casi no se oía: no usarla con hooks largos.
 - **Fuente:** sin servicios con login.
   - Tu propia canción, si me la pasas.
-  - O generada en local con MusicGen (`tools/musicgen.py`): se generan 3 opciones (trap, afro house, hip hop suave) y se elige la que tenga pulso estable y sin huecos largos.
-- **Montaje** (`tools/music_bed.py`): alinea un golpe de la pista con el giro, aplica la intro apagada, baja la música 6 dB mientras hablas y le pone un fade final de 0,7 s.
-- Lo que no funcionó: la música sintetizada a mano (v1).
+  - O generada en local con MusicGen (`tools/musicgen.py`): se generan varias opciones y se elige la que tenga pulso estable y sin huecos largos. **El trap no gustó** (Poedagar 970): usar afro house, reggaetón suave o pop electrónico.
+- **Montaje** (`tools/music_bed.py`): alinea un golpe de la pista con el giro, pone la intro tranquila, baja un poco la música mientras hablas (`--duck`) y le pone un fade final de 0,7 s.
+- Lo que no funcionó: la música sintetizada a mano (v1); el trap y la música tan baja que no se escuchaba (Poedagar 970 v1).
 
 ### 7.3 Efectos de sonido
 Biblioteca offline de HyperFrames (`media-use/audio/assets/sfx`), copiada en `assets/sfx/`:
 
 | Momento | Efecto | Volumen |
 |---|---|---|
-| Hook → giro | `riser`, que corona justo en el giro | 0,32 (sube) |
-| Giro | `impact-bass-1` + `sparkle` | 0,55 / 0,22 |
+| Hook → giro | `riser`, que corona justo en el giro | 0,4 (sube) |
+| Giro | `whoosh-cinematic` + `impact-bass-1` + `sparkle` | 0,5 / 0,6 / 0,25 |
 | Aparece el precio | `pop` | 0,35 |
-| Cortes del hook | `whoosh-short` (0,12 s antes del corte) | 0,18–0,2 |
-| Cortes con movimiento y cada color | `whoosh-short` / `whoosh` | 0,2–0,3 |
-| Cada ✅ | `pop` | 0,3 |
-| Teléfono | `chime` | 0,4 |
+| Cortes secos (hook y la mayoría) | **Sin efecto.** No se pone un whoosh en cada corte | — |
+| Solo los cortes con golpe de zoom o una transición de verdad (2–4 en todo el video) | Variar: `whoosh-short`, `whoosh`, `impact-bass-2` | 0,2–0,35 |
+| Números de la lista | `click` | 0,45 |
+| Cada ✅ | `click-soft` (o `pop`, pero sin repetir siempre el mismo) | 0,3–0,4 |
+| Teléfono o "LO QUIERO" | `chime` | 0,4 |
+
+Regla: los efectos se varían y se usan solo cuando algo entra con fuerza; si todos los cortes llevan el mismo whoosh, cansa.
+
+**Volumen de los efectos:** los de la tabla son para una voz a ~−16 LUFS. Si la voz quedó más baja, se bajan en la misma proporción. `impact-bass-1` e `impact-bass-2` son muy densos (promedio −5 y −3 dB): nunca más de ~0,1, o el giro satura cuando se sube el volumen final. En el giro no se apilan todos fuertes: subida, whoosh, golpe y brillo suaves (Poedagar 970 v3: 0,12 / 0,1 / 0,07 / 0,14 con la voz a −25 LUFS).
 
 ### 7.4 Mezcla final
-- Voz ~−16 LUFS; música ~8–10 dB por debajo de la voz.
+- Voz ~−16 LUFS; música ~5–6 dB por debajo de la voz. **La música tiene que escucharse clara** (con 8–10 dB por debajo no se oía). Si la voz grabada quedó baja, se compensa subiendo la voz en la mezcla, no bajando la música.
 - El video final se entrega a **−15 LUFS** con picos por debajo de −1 dB (se sube el audio después del render, sin tocar el video).
 
 ---
@@ -333,6 +348,11 @@ Notas de esta máquina:
 | Guion Poedagar 821 v1 | La voz narraba el clip ("Clic… giras la muñeca…"); "correa integrada a la caja" no se entiende; "que no se note lo poco que gastaste" suena a mala calidad | El guion es voz de venta que se graba aparte: nunca describe lo que hace la mano en la toma. Beneficios en palabras que entienda cualquiera. Nada que insinúe barato o mala calidad: el precio se dice como oportunidad, no como "gastaste poco" |
 | Nibosi 2653 | Se procesó la voz con EQ y compresión (`voice.ps1`) | **La voz queda natural**: solo se quitan los silencios y se sube con ganancia lineal, sin EQ, compresor ni limitador |
 | Guion Onola 3826 v1 | Hook "¿Cuánto crees que cuesta?" en el reloj más caro de la tienda: hacía pensar que era barato | Antes de elegir el hook, preguntar dónde está el modelo en la gama de precios. En los de gama alta, el hook vende exclusividad o presencia (nunca juega a adivinar el precio) y el precio va al cierre sin "tan solo" |
+| Poedagar 970 | Todos los videos tenían el mismo esquema (precio, ✅, colores, teléfono) y ya cansaba | Se puede variar el formato completo: hook de lista/consejo, sin precio, sin número de modelo y sin teléfono (§ 2.1, "Formato sin precio ni teléfono") |
+| Video Poedagar 970 v1 | Trap que no gustó y música tan baja que no se escuchaba; el mismo whoosh en todos los cortes; el hook arrancaba en el set vacío con zoom a la caja del fondo y el reloj salía con un corte simple; en "te llega en su caja" se hacía zoom a la caja del fondo | Intro tranquila aparte + pista movida en el giro, música a ~5–6 dB de la voz (§ 7.2, 7.4). Efectos variados y solo en transiciones reales (§ 7.3). Sin toma de caja, el hook es la correa/tapa/broche en cámara lenta (§ 2.1). Entrada rápida del reloj en el giro (§ 2.2). Nunca zoom a la caja del fondo |
+| Video Poedagar 970 v2 | El giro saturaba (golpe de bajo y whoosh demasiado fuertes) y la voz decía "con absolutamente…" sin el "todo": el corte de pausas se comió la sílaba final | Efectos del giro mucho más bajos, y los `impact-bass` nunca pasan de ~0,1 (§ 7.3). Antes de cortar una pausa se mira la energía, y después se comprueba con la transcripción que estén todas las palabras (§ 7.1) |
+| Guion Poedagar 970 | "Broche desplegable" (se dice "broche mariposa"); "que la esfera no sea de adorno" no gustó; "Comenta lo quiero y te escribo" sonaba incompleto | Decir "broche mariposa". No usar el ángulo "de adorno". El cierre sin teléfono es "Comenta 'lo quiero' y te envío el catálogo" |
+| Guion Sinobi 9883 | Todos los videos seguían el mismo molde (precio, ✅, teléfono). Los guiones en "tono de creador" (primera persona, "lo que más me gusta…") no gustaron, y tampoco que se repitieran sus palabras tal cual | Formato alternativo cuando se pida: sin precio, sin teléfono y sin llamada a la acción; cierra con una pregunta que invite a comentar ("¿Redondo o cuadrado?"). En la voz se dice solo la marca, nunca el número del modelo. No copiar en el guion las frases que el usuario dice al explicar el producto |
 | Pedido nov. 2026 | Escenas de 0,5–1 s se sentían demasiado rápidas; faltaban subtítulos | Escenas de 1,5 s mínimo, 2 s máximo (promedio 1,5–2 s; bonitas hasta 3 s). Subtítulos dinámicos siempre, abajo-centro fuera de la zona prohibida (§ 6.1). Siempre HyperFrames |
 
 ---

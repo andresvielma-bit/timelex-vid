@@ -44,8 +44,9 @@ Sé editar y lo hago bien, pero no me gusta. **Tú editas los videos** con **Hyp
 - **Siempre con HyperFrames:** todos los videos se editan y renderizan con HyperFrames (ffmpeg solo para preparar tomas, voz y volumen final).
 - **Cortes:** cada escena dura entre 1,5 s (mínimo, nunca menos) y 2 s, con promedio de 1,5–2 s. Las escenas bonitas o pausadas (la esfera) pueden llegar a 3 s como máximo.
 - **Subtítulos siempre:** pequeños pero legibles, dinámicos (grupos de 2–4 palabras, palabra activa resaltada), centrados abajo pero fuera de la zona de botones de TikTok/Reels (bloque entre y≈1300 y 1450 de 1920). Detalle en § 6.1 de `METODOLOGIA.md`.
-- **Hook con misterio:** abrir la caja, sacarla, quitar el paño… sin mostrar la esfera. El hook puede ser el precio ("Por tan solo 49 a tasa del Banco Central…", que funcionó muy bien en el viral), una prueba, una frase aspiracional o una historia. Eso cambia según el video; la estructura no.
-- **El giro:** cuando sale el reloj hay una transición (destello + zoom) y la música, que venía tranquila, agarra ritmo rápido justo ahí.
+- **Hook con misterio:** se empieza siempre con la caja (abrirla, sacarla, quitar el paño…) sin mostrar la esfera. Si no hay toma de la caja con ese reloj, se empieza con la correa, la tapa y el broche en cámara lenta suave, nunca con zoom a la caja del fondo. El hook puede ser el precio ("Por tan solo 49 a tasa del Banco Central…", que funcionó muy bien en el viral), una prueba, una frase aspiracional o una historia. Eso cambia según el video; la estructura no.
+- **El giro:** el reloj entra rápido (destello + zoom grande con un leve giro), no sale "de la nada" con un corte simple. La música, que venía tranquila (y se escucha), se vuelve movida y emocionante justo ahí.
+- **Efectos de sonido variados** y solo en las transiciones de verdad, no el mismo whoosh en cada corte.
 - **Después:** el reloj bonito, los detalles (correa, broche, día y fecha), las pruebas si las hay (agua, rayado), los colores uno por uno, la caja, el delivery y los envíos, y al final el número de teléfono.
 - **Cada toma muestra lo que dice la voz** en ese momento.
 - **Siempre:** tomas nítidas, solo video (nunca fotos), sin viñetas ni fondos oscuros, efectos de sonido en las transiciones, voz natural y clara.

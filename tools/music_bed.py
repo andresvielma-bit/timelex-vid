@@ -28,6 +28,14 @@ ap.add_argument("out")
 ap.add_argument("--dur", type=float, required=True)
 ap.add_argument("--drop", type=float, required=True)
 ap.add_argument("--hit", type=float)
+# corte del pasa-bajos antes del drop; con un hook largo (formato lista, ~10 s) conviene ~700 Hz para que se sienta el pulso
+ap.add_argument("--lp", type=float, default=350)
+# intro tranquila aparte (otra pista, ej. piano/pads): suena entera antes del drop y en el drop entra la pista movida.
+# Con --intro no se usa el pasa-bajos. --intro-gain: dB de la intro respecto a la parte movida (por defecto -4).
+ap.add_argument("--intro")
+ap.add_argument("--intro-gain", type=float, default=-4.0)
+# cuánto baja la música mientras hablas (0.5 = -6 dB; 0.35 = -3,7 dB)
+ap.add_argument("--duck", type=float, default=0.5)
 args = ap.parse_args()
 
 SR = 48000
@@ -69,11 +77,22 @@ seg = np.pad(seg, (0, int(DUR * SR) - len(seg)))
 t = np.arange(len(seg)) / SR
 
 # Intro apagada: pasa-bajos a 350 Hz que se abre en los últimos 0,6 s antes del drop
-muffled = sosfilt(butter(2, 350, "low", fs=SR, output="sos"), seg)
-mix = np.clip((t - (DROP - 0.6)) / 0.6, 0, 1) ** 2
-mix[t >= DROP] = 1.0
-bed = muffled * (1 - mix) + seg * mix
-bed *= np.where(t < DROP, 0.75, 1.0)
+if args.intro:
+    # intro tranquila: misma sonoridad relativa que pida --intro-gain, cruce corto justo antes del drop
+    yi, _ = librosa.load(args.intro, sr=SR, mono=True)
+    yi = loop_to(yi, len(seg))[:len(seg)]
+    post_rms = np.sqrt(np.mean(seg[t >= DROP] ** 2))
+    pre_rms = np.sqrt(np.mean(yi[t < DROP] ** 2))
+    yi *= post_rms / max(pre_rms, 1e-9) * 10 ** (args.intro_gain / 20)
+    mix = np.clip((t - (DROP - 0.25)) / 0.25, 0, 1)
+    mix[t >= DROP] = 1.0
+    bed = yi * (1 - mix) + seg * mix
+else:
+    muffled = sosfilt(butter(2, args.lp, "low", fs=SR, output="sos"), seg)
+    mix = np.clip((t - (DROP - 0.6)) / 0.6, 0, 1) ** 2
+    mix[t >= DROP] = 1.0
+    bed = muffled * (1 - mix) + seg * mix
+    bed *= np.where(t < DROP, 0.75, 1.0)
 # entrada suave
 bed *= np.clip(t / 0.15, 0, 1)
 
@@ -95,7 +114,7 @@ for i in range(len(bed)):
     c = att if speaking[i] > acc else rel
     acc = c * acc + (1 - c) * speaking[i]
     env[i] = acc
-duck = 1 - 0.5 * env
+duck = 1 - args.duck * env
 duck = np.where((t >= DROP - 0.05) & (t < DROP + 0.45), np.maximum(duck, 0.85), duck)
 bed *= duck
 

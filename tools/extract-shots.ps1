@@ -10,6 +10,9 @@
 #   entrada   segundo de la fuente donde empieza la toma
 #   duracion  segundos que dura en la línea de tiempo (se agregan 0,25 s de margen)
 #   4k        1 = se extrae a 2160x3840 para hacerle un acercamiento fuerte sin perder nitidez
+#   vel       (columna opcional) velocidad: 0.75 = cámara lenta suave (las fuentes de 60 fps quedan fluidas).
+#             La toma sigue durando "duracion" en la línea de tiempo; de la fuente se usan duracion x vel segundos.
+#   -Only acepta varios ids separados por coma: -Only "s07,s11"
 param(
   [Parameter(Mandatory = $true)][string]$Src,
   [string]$Edl = "edl.csv",
@@ -18,6 +21,8 @@ param(
 )
 
 New-Item -ItemType Directory -Force $Out | Out-Null
+# con -File, "-Only s07,s11" llega como un solo texto: se separa aquí
+$Only = @($Only | ForEach-Object { $_ -split ',' } | ForEach-Object { $_.Trim() } | Where-Object { $_ })
 $grade = "eq=contrast=1.07:brightness=0.025:saturation=1.12:gamma=0.97,unsharp=5:5:0.35:5:5:0"
 
 foreach ($e in Import-Csv $Edl) {
@@ -26,8 +31,11 @@ foreach ($e in Import-Csv $Edl) {
   $size = if ($e.'4k' -eq '1') { "2160:3840" } else { "1080:1920" }
   $file = Get-ChildItem -Path $Src -Filter "$($e.archivo).*" | Where-Object { $_.Extension -match '^\.(mov|mp4|m4v)$' } | Select-Object -First 1
   if (-not $file) { Write-Output "FALTA $($e.archivo) en $Src"; continue }
-  ffmpeg -hide_banner -loglevel error -y -ss $e.entrada -i $file.FullName -t $dur -an `
-    -vf "scale=${size}:flags=lanczos:force_original_aspect_ratio=increase,crop=${size},fps=30,$grade,format=yuv420p" `
+  $vel = if ($e.PSObject.Properties['vel'] -and $e.vel) { [double]$e.vel } else { 1.0 }
+  $slow = if ($vel -ne 1.0) { "setpts=PTS/$vel," } else { "" }
+  # -t va después de los filtros: limita la duración de salida (ya en cámara lenta)
+  ffmpeg -hide_banner -loglevel error -y -ss $e.entrada -i $file.FullName -an `
+    -vf "${slow}scale=${size}:flags=lanczos:force_original_aspect_ratio=increase,crop=${size},fps=30,$grade,format=yuv420p" -t $dur `
     -c:v libx264 -preset slow -crf 12 -g 15 -colorspace bt709 -color_primaries bt709 -color_trc bt709 -movflags +faststart "$Out\$($e.id).mp4"
-  Write-Output "$($e.id) <- $($e.archivo) @ $($e.entrada)s ($dur s) $size"
+  Write-Output "$($e.id) <- $($e.archivo) @ $($e.entrada)s ($dur s, vel $vel) $size"
 }
